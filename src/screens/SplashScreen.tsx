@@ -1,25 +1,21 @@
-import React, { FC, useEffect, } from 'react';
-import { View, StyleSheet, ActivityIndicator, Image } from 'react-native';
+import React, {FC, useEffect} from 'react';
+import {View, StyleSheet, ActivityIndicator, Image} from 'react-native';
 import logo from '../assets/images/logo.png';
-import { prepareNavigation, resetAndNavigate } from '../utils/NavigationUtil';
+import {prepareNavigation, resetAndNavigate} from '../utils/NavigationUtil';
 
 const SplashScreen: FC = () => {
-
   useEffect(() => {
     prepareNavigation();
     setTimeout(() => {
       resetAndNavigate('OnBoardingScreen');
-    },
-      3000)
+    }, 3000);
   }, []);
-
-
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          testID='logo-image'
+          testID="logo-image"
           source={logo}
           style={[
             {
@@ -30,17 +26,17 @@ const SplashScreen: FC = () => {
           ]}
         />
       </View>
-      <View style={{ marginBottom: 40 }}>
-        <ActivityIndicator size={'large'} testID='loading-indicator' />
+      <View style={{marginBottom: 40}}>
+        <ActivityIndicator size={'large'} testID="loading-indicator" />
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1a1a1a'
+    backgroundColor: '#1a1a1a',
   },
   imageContainer: {
     flex: 1,

@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native';
-import { Colors } from '../utils/Colors';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { normalizeModerately, normalizeWidth } from '../utils/Scaling';
-import { FONTS } from '../utils/Fonts';
+import {StyleSheet} from 'react-native';
+import {Colors} from '../utils/Colors';
+import {RFValue} from 'react-native-responsive-fontsize';
+import {normalizeModerately, normalizeWidth} from '../utils/Scaling';
+import {FONTS} from '../utils/Fonts';
 
 const TextStyle = StyleSheet.create({
   buttonText: {

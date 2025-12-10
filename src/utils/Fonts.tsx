@@ -5,5 +5,4 @@ export enum FONTS {
   Medium = 'Poppins-Medium',
   Regular = 'Poppins-Regular',
   SemiBold = 'Poppins-SemiBold',
-};
-
+}
