@@ -1,7 +1,13 @@
-import { CommonActions, StackActions } from '@react-navigation/native';
+import {
+  CommonActions,
+  createNavigationContainerRef,
+  StackActions,
+} from '@react-navigation/native';
 import {
   goBack,
   navigate,
+  navigationRef,
+  prepareNavigation,
   push,
   resetAndNavigate,
 } from '../../src/utils/NavigationUtil';
@@ -77,6 +83,14 @@ describe('NavigationUtil', () => {
       expect(StackActions.push).toHaveBeenCalledWith('TestRoute', {
         id: 14,
       });
+    });
+  });
+
+  describe('prepareNavigation', () => {
+    it('should prepare for Navigation', async () => {
+      await prepareNavigation();
+
+      expect(navigationRef.isReady).toHaveBeenCalled();
     });
   });
 });
