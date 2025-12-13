@@ -1,7 +1,7 @@
-import React, {FC, useEffect} from 'react';
-import {View, StyleSheet, ActivityIndicator, Image} from 'react-native';
+import React, { FC, useEffect } from 'react';
+import { View, StyleSheet, ActivityIndicator, Image } from 'react-native';
 import logo from '../assets/images/logo.png';
-import {prepareNavigation, resetAndNavigate} from '../utils/NavigationUtil';
+import { prepareNavigation, resetAndNavigate } from '../utils/NavigationUtil';
 
 const SplashScreen: FC = () => {
   useEffect(() => {
@@ -26,7 +26,7 @@ const SplashScreen: FC = () => {
           ]}
         />
       </View>
-      <View style={{marginBottom: 40}}>
+      <View style={{ marginBottom: 40 }}>
         <ActivityIndicator size={'large'} testID="loading-indicator" />
       </View>
     </View>
