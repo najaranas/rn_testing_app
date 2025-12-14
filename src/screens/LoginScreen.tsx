@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import CustomSafeAreaViewScroll from '../components/global/CustomSafeAreaViewScroll';
 import CustomHeading from '../components/global/CustomHeading';
 import Input from '../components/ui/Input';
 import CustomButton from '../components/ui/CustomButton';
 import FooterTextTouchable from '../components/ui/FooterTextTouchable';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 
-import {navigate} from '../utils/NavigationUtil';
-import {AppDispatch} from '../redux/store';
-import {loginUser} from '../redux/reducers/userSlice';
+import { navigate } from '../utils/NavigationUtil';
+import { AppDispatch } from '../redux/store';
+import { loginUser } from '../redux/reducers/userSlice';
 
 interface InputErrors {
   email?: string | null;
@@ -28,11 +28,11 @@ const LoginScreen: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const handleOnChange = (text: string, input: string) => {
-    setInputs(prevState => ({...prevState, [input]: text}));
+    setInputs(prevState => ({ ...prevState, [input]: text }));
   };
 
   const handleError = (errorMessage: string | null, input: string) => {
-    setErrors(prevState => ({...prevState, [input]: errorMessage}));
+    setErrors(prevState => ({ ...prevState, [input]: errorMessage }));
   };
 
   const validateInputs = () => {
@@ -104,7 +104,7 @@ const LoginScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  inputContainer: {marginTop: 20},
+  inputContainer: { marginTop: 20 },
 });
 
 export default LoginScreen;

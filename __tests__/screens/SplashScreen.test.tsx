@@ -22,22 +22,22 @@ describe('SplashScreen', () => {
       render(<SplashScreen />);
       expect(screen.getByTestId('logo-image')).toBeTruthy();
     });
+  });
 
-    it('should call prepareNavigation on mount', () => {
-      render(<SplashScreen />);
+  it('should call prepareNavigation on mount', () => {
+    render(<SplashScreen />);
 
-      expect(prepareNavigation).toHaveBeenCalled();
-    });
+    expect(prepareNavigation).toHaveBeenCalled();
+  });
 
-    it('should rest & navigate after 3000ms', async () => {
-      render(<SplashScreen />);
+  it('should rest & navigate after 3000ms', async () => {
+    render(<SplashScreen />);
 
-      await waitFor(
-        () => {
-          expect(resetAndNavigate).toHaveBeenCalled();
-        },
-        { timeout: 3500 }, //  Wait for slightly more than 3 seconds
-      );
-    });
+    await waitFor(
+      () => {
+        expect(resetAndNavigate).toHaveBeenCalled();
+      },
+      { timeout: 3500 }, //  Wait for slightly more than 3 seconds
+    );
   });
 });

@@ -1,6 +1,6 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import type {PayloadAction} from '@reduxjs/toolkit';
-import type {RootState} from '../store';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../store';
 
 interface UserState {
   user: null | Record<string, any>;
@@ -12,7 +12,7 @@ const initialState: UserState = {
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
-  async (user: Record<string, any>, {rejectWithValue}) => {
+  async (user: Record<string, any>, { rejectWithValue }) => {
     try {
       if (!user.name || !user.email) {
         throw new Error('Registration failed');
@@ -27,7 +27,7 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
-  async (credentials: Record<string, any>, {rejectWithValue}) => {
+  async (credentials: Record<string, any>, { rejectWithValue }) => {
     try {
       if (!credentials.email || !credentials.password) {
         throw new Error('Login failed');
@@ -68,7 +68,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const {setUser} = userSlice.actions;
+export const { setUser } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user.user;
 

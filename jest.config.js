@@ -6,7 +6,7 @@ module.exports = {
     '^.+\\.(ts|tsx)$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|react-native-swiper|react-redux|react-native-linear-gradient|@react-navigation|@react-native|@react-native/assets)/)',
+    'node_modules/(?!(react-native|react-native-swiper|react-redux|@reduxjs/toolkit|immer|redux|redux-persist|react-native-linear-gradient|@react-navigation|@react-native|@react-native/assets)/)',
   ],
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
   testPathIgnorePatterns: ['/node_modules/', '/android/', '/ios/'],
@@ -14,11 +14,11 @@ module.exports = {
   coverageReporters: ['json', 'text', 'lcov', 'clover'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-    '\\.(png|jpg|jpeg|gif|svg)$': '<rootDir>/__mocks__/fileMock.ts',
+    '\\.(png|jpg|jpeg|gif|svg)$': '<rootDir>/__Mocks__/fileMock.ts',
     'react-native-responsive-fontsize':
-      '<rootDir>/__mocks__/react-native-responsive-fontsize.ts',
+      '<rootDir>/__Mocks__/react-native-responsive-fontsize.ts',
     'react-native-size-matters':
-      '<rootDir>/__mocks__/react-native-size-matters.ts',
+      '<rootDir>/__Mocks__/react-native-size-matters.ts',
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
