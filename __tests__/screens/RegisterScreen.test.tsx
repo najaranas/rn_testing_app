@@ -127,8 +127,10 @@ describe('RegisterScreen', () => {
         ({ expectedError, value }) => {
           renderWithProvider(<RegisterScreen />);
 
+          const signUpButton = screen.getByTestId('Register');
+
           fireEvent.changeText(screen.getByPlaceholderText('Email'), value);
-          fireEvent.press(screen.getByTestId('Register'));
+          fireEvent.press(signUpButton);
 
           expect(screen.getByText(expectedError)).toBeTruthy();
         },
@@ -137,11 +139,13 @@ describe('RegisterScreen', () => {
       it('sould accept valid email format', () => {
         renderWithProvider(<RegisterScreen />);
 
+        const signUpButton = screen.getByTestId('Register');
+
         fireEvent.changeText(
           screen.getByPlaceholderText('Email'),
           TEST_DATA.validCredentials.email,
         );
-        fireEvent.press(screen.getByTestId('Register'));
+        fireEvent.press(signUpButton);
 
         expect(screen.queryByText(TEST_DATA.erors.emptyEmail)).toBeNull();
         expect(screen.queryByText(TEST_DATA.erors.invalidEmail)).toBeNull();
@@ -152,19 +156,21 @@ describe('RegisterScreen', () => {
       it('should show Enter your password when password is invalid', () => {
         renderWithProvider(<RegisterScreen />);
         const passWordInput = screen.getByPlaceholderText('Password');
+        const signUpButton = screen.getByTestId('Register');
 
         fireEvent.changeText(passWordInput, '');
-        expect(TEST_DATA.erors.emptyPassWord).toBeTruthy();
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyPassWord)).toBeTruthy();
       });
 
       it('should accept valid password format', () => {
         renderWithProvider(<RegisterScreen />);
         const passWordInput = screen.getByPlaceholderText('Password');
+        const signUpButton = screen.getByTestId('Register');
 
         fireEvent.changeText(passWordInput, '1234');
-        expect(
-          screen.queryByPlaceholderText(TEST_DATA.erors.emptyPassWord),
-        ).toBeNull();
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyPassWord)).toBeNull();
       });
     });
 
@@ -172,19 +178,21 @@ describe('RegisterScreen', () => {
       it('should show Enter your your first name when firsName is invalid', () => {
         renderWithProvider(<RegisterScreen />);
         const firstNameInput = screen.getByPlaceholderText('First name');
+        const signUpButton = screen.getByTestId('Register');
 
         fireEvent.changeText(firstNameInput, '');
-        expect(TEST_DATA.erors.emptyFirstName).toBeTruthy();
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyFirstName)).toBeTruthy();
       });
 
       it('should accept valid first name format', () => {
         renderWithProvider(<RegisterScreen />);
         const firstNameInput = screen.getByPlaceholderText('First name');
+        const signUpButton = screen.getByTestId('Register');
 
         fireEvent.changeText(firstNameInput, 'anas');
-        expect(
-          screen.queryByPlaceholderText(TEST_DATA.erors.emptyFirstName),
-        ).toBeNull();
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyFirstName)).toBeNull();
       });
     });
 
@@ -193,18 +201,75 @@ describe('RegisterScreen', () => {
         renderWithProvider(<RegisterScreen />);
         const lastNameInput = screen.getByPlaceholderText('Last name');
 
+        const signUpButton = screen.getByTestId('Register');
+
         fireEvent.changeText(lastNameInput, '');
-        expect(TEST_DATA.erors.emptyLastName).toBeTruthy();
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyLastName)).toBeTruthy();
       });
 
       it('should accept valid first name format', () => {
         renderWithProvider(<RegisterScreen />);
         const lastNameInput = screen.getByPlaceholderText('Last name');
+        const signUpButton = screen.getByTestId('Register');
 
         fireEvent.changeText(lastNameInput, 'najar');
-        expect(
-          screen.queryByPlaceholderText(TEST_DATA.erors.emptyLastName),
-        ).toBeNull();
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyLastName)).toBeNull();
+      });
+    });
+
+    describe('Error Cleaning', () => {
+      it('should clear First name error when First name input is focused', () => {
+        renderWithProvider(<RegisterScreen />);
+        const firstNameInput = screen.getByPlaceholderText('First name');
+        const signUpButton = screen.getByTestId('Register');
+
+        fireEvent.changeText(firstNameInput, '');
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyFirstName)).toBeTruthy();
+
+        fireEvent(firstNameInput, 'focus');
+        expect(screen.queryByText(TEST_DATA.erors.emptyFirstName)).toBeNull();
+      });
+
+      it('should clear Last name error when last name input is focused', () => {
+        renderWithProvider(<RegisterScreen />);
+        const LastNameInput = screen.getByPlaceholderText('Last name');
+        const signUpButton = screen.getByTestId('Register');
+
+        fireEvent.changeText(LastNameInput, '');
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyLastName)).toBeTruthy();
+
+        fireEvent(LastNameInput, 'focus');
+        expect(screen.queryByText(TEST_DATA.erors.emptyLastName)).toBeNull();
+      });
+
+      it('should clear email error when email input is focused', () => {
+        renderWithProvider(<RegisterScreen />);
+        const emailInput = screen.getByPlaceholderText('Email');
+        const signUpButton = screen.getByTestId('Register');
+
+        fireEvent.changeText(emailInput, '');
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyEmail)).toBeTruthy();
+
+        fireEvent(emailInput, 'focus');
+        expect(screen.queryByText(TEST_DATA.erors.emptyEmail)).toBeNull();
+      });
+
+      it('should clear passWord error when passWord input is focused', () => {
+        renderWithProvider(<RegisterScreen />);
+        const LastNameInput = screen.getByPlaceholderText('Password');
+        const signUpButton = screen.getByTestId('Register');
+
+        fireEvent.changeText(LastNameInput, '');
+        fireEvent.press(signUpButton);
+        expect(screen.queryByText(TEST_DATA.erors.emptyPassWord)).toBeTruthy();
+
+        fireEvent(LastNameInput, 'focus');
+        expect(screen.queryByText(TEST_DATA.erors.emptyPassWord)).toBeNull();
       });
     });
   });
