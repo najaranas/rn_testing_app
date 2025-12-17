@@ -3,6 +3,7 @@ import { store } from '../../src/redux/store';
 import RegisterScreen from '../../src/screens/RegisterScreen';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import { navigate } from '../../src/utils/NavigationUtil';
+import { registerUser } from '../../src/redux/reducers/userSlice';
 
 const TEST_DATA = {
   validCredentials: {
@@ -270,6 +271,59 @@ describe('RegisterScreen', () => {
 
         fireEvent(LastNameInput, 'focus');
         expect(screen.queryByText(TEST_DATA.erors.emptyPassWord)).toBeNull();
+      });
+    });
+
+    describe('SignUp flow', () => {
+      it('should not navigate when validation fails', async () => {
+        renderWithProvider(<RegisterScreen />);
+        const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+        const signupButton = screen.getByTestId('Register');
+        fireEvent.press(signupButton);
+
+        expect(dispatchSpy).not.toHaveBeenCalledWith(
+          expect.objectContaining({
+            type: expect.stringMatching(/"^user\/registerUser"/),
+          }),
+        );
+
+        expect(navigate).not.toHaveBeenCalled();
+      });
+
+      it('should dispatch fulfilled when thunk is called with valid credentials', async () => {
+        renderWithProvider(<RegisterScreen />);
+
+        const action = await store.dispatch(
+          registerUser({
+            email: TEST_DATA.validCredentials.email,
+            name: TEST_DATA.validCredentials.LastName,
+          }),
+        );
+
+        const signupButton = screen.getByTestId('Register');
+        fireEvent.press(signupButton);
+
+        expect(action.type).toBe(registerUser.fulfilled.type);
+        expect(action.payload).toEqual({
+          email: TEST_DATA.validCredentials.email,
+          name: TEST_DATA.validCredentials.LastName,
+        });
+      });
+
+      it('should dispatch rejected when thunk receives invalid credentials', async () => {
+        renderWithProvider(<RegisterScreen />);
+
+        const action = await store.dispatch(
+          registerUser({
+            email: '',
+          }),
+        );
+
+        const signupButton = screen.getByTestId('Register');
+        fireEvent.press(signupButton);
+
+        expect(action.type).toBe(registerUser.rejected.type);
       });
     });
   });
