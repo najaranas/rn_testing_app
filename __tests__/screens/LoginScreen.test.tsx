@@ -241,11 +241,6 @@ describe('LoginScreen', () => {
           const passwordInput = screen.getByPlaceholderText('Password');
           const loginButton = screen.getByTestId('Login');
 
-          // Fill password to isolate email validation
-          fireEvent.changeText(
-            passwordInput,
-            TEST_DATA.validCredentials.password,
-          );
           fireEvent.changeText(emailInput, value);
           fireEvent.press(loginButton);
 

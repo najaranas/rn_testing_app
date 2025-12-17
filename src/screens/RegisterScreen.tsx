@@ -129,7 +129,9 @@ const RegisterScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  inputContainer: { marginTop: 20 },
+  inputContainer: {
+    marginTop: 20,
+  },
 });
 
 export default RegisterScreen;
