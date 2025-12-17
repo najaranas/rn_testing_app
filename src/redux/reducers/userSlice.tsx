@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (user: Record<string, any>, { rejectWithValue }) => {
     try {
-      if (!user.name || !user.email) {
+      if (!user.firstName || !user.email) {
         throw new Error('Registration failed');
       }
       await new Promise(resolve => setTimeout(resolve, 1000));

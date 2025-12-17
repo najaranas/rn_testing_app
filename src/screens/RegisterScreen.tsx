@@ -75,7 +75,14 @@ const RegisterScreen: React.FC = () => {
   const SignUpHandler = async () => {
     const isValid = validateInputs();
     if (isValid) {
-      dispatch(registerUser(inputs)).then(() => {
+      // Transform keys to match what registerUser thunk expects
+      const userData = {
+        firstName: inputs.first_name,
+        lastName: inputs.last_name,
+        email: inputs.email,
+        passWord: inputs.password,
+      };
+      dispatch(registerUser(userData)).then(() => {
         navigate('HomeScreen');
       });
     }

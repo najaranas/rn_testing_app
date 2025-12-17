@@ -1,15 +1,22 @@
 import { Provider } from 'react-redux';
 import { store } from '../../src/redux/store';
 import RegisterScreen from '../../src/screens/RegisterScreen';
-import { fireEvent, render, screen } from '@testing-library/react-native';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+} from '@testing-library/react-native';
 import { navigate } from '../../src/utils/NavigationUtil';
-import { registerUser } from '../../src/redux/reducers/userSlice';
+import userReducer, { registerUser } from '../../src/redux/reducers/userSlice';
+import { configureStore } from '@reduxjs/toolkit';
 
 const TEST_DATA = {
   validCredentials: {
     firstName: 'Anas',
-    LastName: 'Najar',
+    lastName: 'Najar',
     email: 'test@gmail.com',
+    passWord: '1234',
   },
   invalidEmails: [
     { value: '', expectedError: 'Please enter your email' },
@@ -29,8 +36,34 @@ const TEST_DATA = {
   },
 };
 
-const renderWithProvider = (children: any) => {
-  render(<Provider store={store}>{children}</Provider>);
+const createTestStore = (preloadedState = {}) =>
+  configureStore({
+    reducer: {
+      user: userReducer,
+    },
+    preloadedState,
+    middleware: getDefaultMiddleware =>
+      getDefaultMiddleware({
+        // Disable serialization checks in tests to avoid console warnings
+        serializableCheck: false,
+      }),
+  });
+
+/**
+ * Wrapper that provides Redux context to components
+ *
+ * Returns both render result AND store so tests can:
+ * 1. Interact with UI
+ * 2. Assert on Redux state
+ */
+const renderWithProvider = (
+  children: any,
+  { store = createTestStore() } = {},
+) => {
+  return {
+    ...render(<Provider store={store}>{children}</Provider>),
+    store, // ← Return store for assertions
+  };
 };
 
 jest.mock('../../src/utils/NavigationUtil', () => ({
@@ -276,8 +309,10 @@ describe('RegisterScreen', () => {
 
     describe('SignUp flow', () => {
       it('should not navigate when validation fails', async () => {
-        renderWithProvider(<RegisterScreen />);
+        const store = createTestStore();
         const dispatchSpy = jest.spyOn(store, 'dispatch');
+
+        renderWithProvider(<RegisterScreen />, { store });
 
         const signupButton = screen.getByTestId('Register');
         fireEvent.press(signupButton);
@@ -292,27 +327,24 @@ describe('RegisterScreen', () => {
       });
 
       it('should dispatch fulfilled when thunk is called with valid credentials', async () => {
-        renderWithProvider(<RegisterScreen />);
+        const store = createTestStore();
 
         const action = await store.dispatch(
           registerUser({
             email: TEST_DATA.validCredentials.email,
-            name: TEST_DATA.validCredentials.LastName,
+            firstName: TEST_DATA.validCredentials.firstName,
           }),
         );
-
-        const signupButton = screen.getByTestId('Register');
-        fireEvent.press(signupButton);
 
         expect(action.type).toBe(registerUser.fulfilled.type);
         expect(action.payload).toEqual({
           email: TEST_DATA.validCredentials.email,
-          name: TEST_DATA.validCredentials.LastName,
+          firstName: TEST_DATA.validCredentials.firstName,
         });
       });
 
       it('should dispatch rejected when thunk receives invalid credentials', async () => {
-        renderWithProvider(<RegisterScreen />);
+        const store = createTestStore();
 
         const action = await store.dispatch(
           registerUser({
@@ -320,10 +352,45 @@ describe('RegisterScreen', () => {
           }),
         );
 
+        expect(action.type).toBe(registerUser.rejected.type);
+      });
+
+      it('should update Redux store with user data & navigate after successful register', async () => {
+        const store = createTestStore();
+
+        renderWithProvider(<RegisterScreen />, { store });
+
+        const emailInput = screen.getByPlaceholderText('Email');
+        const firstNameInput = screen.getByPlaceholderText('First name');
+        const lastNameInput = screen.getByPlaceholderText('Last name');
+        const passwordNameInput = screen.getByPlaceholderText('Password');
         const signupButton = screen.getByTestId('Register');
+
+        fireEvent.changeText(emailInput, TEST_DATA.validCredentials.email);
+        fireEvent.changeText(
+          firstNameInput,
+          TEST_DATA.validCredentials.firstName,
+        );
+        fireEvent.changeText(
+          lastNameInput,
+          TEST_DATA.validCredentials.lastName,
+        );
+        fireEvent.changeText(
+          passwordNameInput,
+          TEST_DATA.validCredentials.passWord,
+        );
+
         fireEvent.press(signupButton);
 
-        expect(action.type).toBe(registerUser.rejected.type);
+        await waitFor(
+          () => {
+            const state = store.getState();
+            expect(state.user.user).toEqual(TEST_DATA.validCredentials);
+          },
+          { timeout: 2000 },
+        );
+
+        expect(navigate).toHaveBeenCalledWith('HomeScreen');
       });
     });
   });
