@@ -19,6 +19,7 @@ module.exports = {
       '<rootDir>/__Mocks__/react-native-responsive-fontsize.ts',
     'react-native-size-matters':
       '<rootDir>/__Mocks__/react-native-size-matters.ts',
+    'react-native-mmkv': '<rootDir>/__Mocks__/react-native-mmkv.ts',
   },
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
