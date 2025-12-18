@@ -2,7 +2,7 @@ import reduxStorage from '../../src/redux/storage';
 import {
   mockSet,
   mockGetString,
-  mockDekete,
+  mockDelete,
 } from '../../__Mocks__/react-native-mmkv';
 
 beforeEach(() => {
@@ -37,6 +37,6 @@ describe('storage', () => {
     const result = await reduxStorage.removeItem(key);
 
     console.log('result', result);
-    expect(mockDekete).toHaveBeenCalledWith(key);
+    expect(mockDelete).toHaveBeenCalledWith(key);
   });
 });
