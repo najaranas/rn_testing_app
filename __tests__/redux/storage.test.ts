@@ -16,7 +16,6 @@ describe('storage', () => {
 
     const result = await reduxStorage.setItem(key, value);
 
-    console.log('result', result);
     expect(mockSet).toHaveBeenCalledWith(key, value);
     expect(result).toBe(true);
   });
@@ -27,7 +26,6 @@ describe('storage', () => {
     mockGetString.mockReturnValue(value);
     const result = await reduxStorage.getItem(key);
 
-    console.log('result', result);
     expect(mockGetString).toHaveBeenCalledWith(key);
     expect(result).toBe(value);
   });
@@ -36,7 +34,6 @@ describe('storage', () => {
     const key = 'theme';
     const result = await reduxStorage.removeItem(key);
 
-    console.log('result', result);
     expect(mockDelete).toHaveBeenCalledWith(key);
   });
 });
